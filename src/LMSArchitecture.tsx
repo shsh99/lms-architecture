@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ChevronRight, Database, Building2, GraduationCap, Layers, BookOpen, UserCheck, FileText, MessageSquare, User, Globe, CreditCard, Search, Tent, Video, Calendar, Target, LucideIcon } from 'lucide-react';
 
 interface ModuleCardProps {
