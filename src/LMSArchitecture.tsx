@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Database, Building2, GraduationCap, Layers, BookOpen, UserCheck, FileText, MessageSquare, User, Globe, CreditCard, Search, Tent, Video, Calendar, Target, LucideIcon } from 'lucide-react';
+import { ChevronDown, ChevronRight, Database, Building2, GraduationCap, Layers, BookOpen, UserCheck, FileText, MessageSquare, User, Globe, CreditCard, Search, Tent, Video, Calendar, Target, Languages, LucideIcon } from 'lucide-react';
 
 interface ModuleCardProps {
   title: string;
@@ -84,6 +84,8 @@ export default function LMSArchitecture() {
       items: ['댓글/Q&A', '과제 피드백', '1:1 피드백 (영상)'] },
     { id: 'user', title: 'User (사용자)', icon: User, color: 'border-slate-300 bg-slate-50',
       items: ['프로필', '역할 (학습자/강사/관리자)', '권한'] },
+    { id: 'i18n', title: 'i18n (다국어)', icon: Languages, color: 'border-slate-300 bg-slate-50',
+      items: ['다국어 콘텐츠 관리', '언어 설정 (한/영/일/중 등)', '자동 번역 연동', 'RTL 지원'] },
   ];
 
   const b2bModules: Module[] = [
