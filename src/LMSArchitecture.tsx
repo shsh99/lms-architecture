@@ -190,7 +190,7 @@ export default function LMSArchitecture() {
       title: 'Tenant (테넌트)',
       icon: Database,
       color: 'border-blue-300 bg-blue-50',
-      items: ['기업별 테넌트 생성/관리', '서브도메인 매핑 (samsung.learn.mzc.com)', '커스텀 도메인 지원', 'Row-Level Security 적용']
+      items: ['기업별 테넌트 생성/관리', '서브도메인 매핑 (samsung.learn.com)', '커스텀 도메인 지원', 'Row-Level Security 적용']
     },
     {
       id: 'b2b-branding',
@@ -352,15 +352,15 @@ export default function LMSArchitecture() {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between items-center p-2 bg-emerald-50 rounded">
             <span className="text-emerald-700">B2C</span>
-            <code className="text-xs bg-white px-2 py-1 rounded">learn.mzc.com</code>
+            <code className="text-xs bg-white px-2 py-1 rounded">learn.com</code>
           </div>
           <div className="flex justify-between items-center p-2 bg-blue-50 rounded">
             <span className="text-blue-700">B2B</span>
-            <code className="text-xs bg-white px-2 py-1 rounded">*.learn.mzc.com</code>
+            <code className="text-xs bg-white px-2 py-1 rounded">*.learn.com</code>
           </div>
           <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
             <span className="text-purple-700">K-Pop</span>
-            <code className="text-xs bg-white px-2 py-1 rounded">kpop.mzc.com</code>
+            <code className="text-xs bg-white px-2 py-1 rounded">kpop.com</code>
           </div>
         </div>
       </div>
