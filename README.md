@@ -1,6 +1,6 @@
-# LMS Architecture Viewer
+# mzc-lp Architecture Viewer
 
-LMS(Learning Management System) 아키텍처를 시각적으로 보여주는 인터랙티브 웹 애플리케이션입니다.
+mzc-lp 플랫폼 아키텍처를 시각적으로 보여주는 인터랙티브 웹 애플리케이션입니다.
 
 ## 배포 URL
 
@@ -8,10 +8,11 @@ https://lms-architecture.vercel.app
 
 ## 기능
 
-- **Core Engine**: 모든 모드에서 공유하는 핵심 모듈 (Course, Curriculum, Enrollment, Content, Feedback, User)
-- **B2B 확장**: 기업용 LMS 전용 모듈 (Tenant, Organization, Analytics)
-- **B2C 확장**: 오픈 캠퍼스 전용 모듈 (Instructor, Payment, Discovery, Landing)
-- **K-Pop 확장**: K-Pop 체험 아카데미 전용 모듈 (Promotion, Camp, Subscription, Video Feedback, Booking)
+- **전체 구조**: B2C 코어 + 테넌트화를 통한 B2B/K-Pop 확장 구조
+- **모듈 구조**: UM, TS, SIS, IIS, CM, CR, LO, CMS 시스템 모듈
+- **B2C (코어)**: 인프런/Udemy 스타일 오픈 마켓플레이스 (Course, Instructor, Payment, Discovery, Landing)
+- **B2B 확장**: 기업용 LMS (Tenant, Branding, Organization, Analytics, License)
+- **K-Pop 확장**: K-Pop 체험 아카데미 (Promotion, Camp, Subscription, Video Feedback, Booking, i18n)
 
 ## 로컬 실행
 
