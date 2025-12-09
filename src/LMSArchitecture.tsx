@@ -91,21 +91,21 @@ export default function LMSArchitecture() {
       title: 'TS (Time Schedule)',
       icon: Clock,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[ts_courses] 강의 개설 신청/검토', 'CourseStatus: DRAFT → PENDING → APPROVED', '[ts_course_times] 차수(Time) 생성', 'TimeStatus: SCHEDULED → OPEN → IN_PROGRESS → COMPLETED', '강사 배정 (IIS 연동)', '필수 수강 강제 신청 (SIS 연동)']
+      items: ['[ts_courses] 강의 개설 신청/검토', 'CourseStatus: DRAFT → PENDING → APPROVED', '[ts_course_times] 차수(Time) 생성', 'TimeStatus: SCHEDULED → OPEN → IN_PROGRESS → COMPLETED', 'delivery_type: ONLINE, OFFLINE, BLENDED, LIVE', 'enrollment_method: FIRST_COME, APPROVAL, INVITE_ONLY', 'completion_rule (JSON): 수료 기준', 'price, is_free: 가격 정보', '강사 배정 (IIS 연동)', '필수 수강 강제 신청 (SIS 연동)']
     },
     {
       id: 'sis',
       title: 'SIS (Student Information)',
       icon: UserCheck,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[sis_enrollments] 수강 기록', '필수: userKey + timeKey + enrolledAt', 'EnrollmentType: VOLUNTARY, MANDATORY', 'EnrollmentStatus: ENROLLED → COMPLETED/DROPPED', 'progressPercent (0-100), score', '수료 시점 기록 (completedAt)']
+      items: ['[sis_enrollments] 수강 기록', '필수: userKey + timeKey + enrolledAt', 'EnrollmentType: VOLUNTARY, MANDATORY', 'EnrollmentStatus: ACTIVE, WAITING, PENDING, COMPLETED, CANCELLED, EXPIRED', 'progressPercent (0-100), score', '수료 시점 기록 (completedAt)']
     },
     {
       id: 'iis',
       title: 'IIS (Instructor Information)',
       icon: GraduationCap,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[iis_instructor_assignments] 강사 배정', '필수: userKey + timeKey + assignedAt', 'InstructorRole: MAIN, SUB', 'AssignmentStatus: ACTIVE, REPLACED, CANCELLED', '강사 교체 이력 관리 (replacedAt)']
+      items: ['[iis_instructor_assignments] 강사 배정', '필수: userKey + timeKey + assignedAt', 'InstructorRole: MAIN, ASSISTANT', 'AssignmentStatus: ACTIVE, REPLACED, CANCELLED', '강사 교체 이력 관리 (replacedAt)']
     },
     {
       id: 'cm',
@@ -289,6 +289,7 @@ export default function LMSArchitecture() {
     b2b: [
       { role: 'TENANT_ADMIN', desc: '전사 통계/브랜딩' },
       { role: 'TENANT_OPERATOR', desc: '전체 운영 (유저/강의/학습현황)' },
+      { role: 'EXTERNAL_INSTRUCTOR', desc: '외부 강사 (강의 진행, 출석 관리)' },
       { role: 'MEMBER', desc: '학습 (수강만)' },
     ],
     kpop: [
