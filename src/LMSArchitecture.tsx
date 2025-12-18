@@ -3,7 +3,7 @@ import {
   ChevronDown, ChevronRight, Database, Building2, GraduationCap,
   BookOpen, UserCheck, User, Globe, CreditCard,
   Search, Tent, Video, Calendar, Languages, LucideIcon,
-  Clock, FolderTree, Link2, Play, Upload, Shield, Settings, BarChart3
+  Clock, FolderTree, Link2, Play, Upload, Shield, Settings, BarChart3, FileText
 } from 'lucide-react';
 
 interface ModuleCardProps {
@@ -112,14 +112,21 @@ export default function LMSArchitecture() {
       title: 'CM (Course Matrix)',
       icon: FolderTree,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[cm_courses] 강의 메타데이터', 'CourseLevel: BEGINNER, INTERMEDIATE, ADVANCED', 'CourseType: ONLINE, OFFLINE, BLENDED', '[cm_course_sections] 섹션 구성', '[cm_section_items] LO 연결 (sortOrder)']
+      items: ['[cm_courses] 강의 메타데이터 관리', 'CourseLevel: BEGINNER, INTERMEDIATE, ADVANCED', 'CourseType: ONLINE, OFFLINE, BLENDED', '[cm_course_items] 차시/폴더 (계층형 구조)', 'Self-reference: 무한 깊이 폴더 지원 (depth 최대 10단계)', 'learningObject = NULL → 폴더, != NULL → 차시', 'ON DELETE CASCADE로 강의 삭제 시 하위 항목 자동 정리']
     },
     {
       id: 'cr',
       title: 'CR (Course Relation)',
       icon: Link2,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[cr_course_relations] 강의 간 관계', 'RelationType: PREREQUISITE (선수강)', 'RECOMMENDED (추천), RELATED (연관)', 'ADVANCED (심화), BUNDLE (번들)', 'Linked List 패턴 (from → to)']
+      items: ['[cr_course_relations] 차시 간 학습 순서 정의', '학습 경로 설정 (시작점, 다음 차시 연결)', 'Linked List 패턴 (fromItem → toItem)', 'fromItem = NULL → 시작점', '순서 변경 시 전체 재정렬 불필요 (특정 연결만 수정)', '향후: 조건부 분기 (점수/완료 여부에 따른 경로 변경)']
+    },
+    {
+      id: 'snapshot',
+      title: 'Snapshot (개설 강의)',
+      icon: FileText,
+      color: 'border-indigo-300 bg-indigo-50',
+      items: ['[cm_snapshots] Course(템플릿)로부터 실제 개설 강의 생성', '수강이력 불변성 보장 (템플릿 수정이 기존 강의에 영향 없음)', 'SnapshotStatus: DRAFT, ACTIVE, COMPLETED, ARCHIVED', '[cm_snapshot_items] 차시/폴더 깊은 복사', '[cm_snapshot_los] 메타데이터 깊은 복사', 'Content 공유 참조 (파일 불변, 스토리지 절약)', 'ON DELETE SET NULL (템플릿 삭제해도 스냅샷 유지)']
     },
     {
       id: 'lo',
