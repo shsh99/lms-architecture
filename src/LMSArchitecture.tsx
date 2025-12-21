@@ -4,7 +4,7 @@ import {
   BookOpen, UserCheck, User, Globe, CreditCard,
   Search, Tent, Video, Calendar, Languages, LucideIcon,
   Clock, FolderTree, Link2, Play, Upload, Shield, Settings, BarChart3, FileText,
-  GitBranch, Lock, AlertTriangle, Key, Server, Filter, Layers, Award, TrendingUp
+  GitBranch, Lock, AlertTriangle, Key, Server, Filter
 } from 'lucide-react';
 
 interface ModuleCardProps {
@@ -73,7 +73,6 @@ export default function LMSArchitecture() {
   const tabs = [
     { id: 'overview', label: '전체 구조', color: 'bg-gray-700' },
     { id: 'modules', label: '모듈 구조', color: 'bg-indigo-600' },
-    { id: 'lms', label: 'LMS', color: 'bg-teal-600' },
     { id: 'transaction', label: '트랜잭션', color: 'bg-orange-600' },
     { id: 'rbac', label: 'RBAC', color: 'bg-rose-600' },
     { id: 'b2c', label: 'B2C', color: 'bg-emerald-600' },
@@ -384,7 +383,7 @@ export default function LMSArchitecture() {
       </div>
 
       {/* 사이트별 URL */}
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
         <h3 className="font-semibold text-gray-700 mb-3">사이트별 URL</h3>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between items-center p-2 bg-emerald-50 rounded">
@@ -398,6 +397,28 @@ export default function LMSArchitecture() {
           <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
             <span className="text-purple-700">K-Pop</span>
             <code className="text-xs bg-white px-2 py-1 rounded">kpop.com</code>
+          </div>
+        </div>
+      </div>
+
+      {/* LMS 개념 */}
+      <div className="bg-teal-50 rounded-lg p-4 border border-teal-200">
+        <h3 className="font-semibold text-teal-700 mb-2">LMS (Learning Management System) 개념</h3>
+        <p className="text-sm text-teal-600 mb-3">
+          이 플랫폼 전체가 LMS입니다. 학습 관리의 모든 영역을 포괄합니다.
+        </p>
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          <div className="bg-white p-2 rounded text-center">
+            <div className="font-medium text-teal-700">콘텐츠</div>
+            <div className="text-gray-500">CMS, LO</div>
+          </div>
+          <div className="bg-white p-2 rounded text-center">
+            <div className="font-medium text-teal-700">강의 운영</div>
+            <div className="text-gray-500">CM, TS, IIS</div>
+          </div>
+          <div className="bg-white p-2 rounded text-center">
+            <div className="font-medium text-teal-700">학습 관리</div>
+            <div className="text-gray-500">SIS (수강/진도/수료)</div>
           </div>
         </div>
       </div>
@@ -957,112 +978,10 @@ export default function LMSArchitecture() {
     </>
   );
 
-  const renderLMS = () => (
-    <>
-      <SectionHeader
-        title="LMS (Learning Management System)"
-        subtitle="진도/성적/수료 관리 - SIS와 분리된 학습 관리"
-        color="bg-teal-600"
-      />
-
-      {/* LMS 핵심 개념 */}
-      <div className="bg-teal-50 rounded-lg p-4 mb-4 border border-teal-200">
-        <h3 className="font-semibold text-teal-700 mb-2 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4" />
-          LMS 핵심 개념
-        </h3>
-        <ul className="text-sm text-teal-600 space-y-1">
-          <li>• SIS는 "수강 신청/등록" 기록만 담당</li>
-          <li>• LMS는 "학습 과정 추적/성과 관리" 담당</li>
-          <li>• 분리 이유: 관심사 분리 + 확장성</li>
-        </ul>
-      </div>
-
-      {/* LMS 주요 기능 */}
-      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
-        <h3 className="font-semibold text-gray-700 mb-3">LMS 주요 기능</h3>
-        <div className="space-y-3 text-sm">
-          <div className="bg-gray-50 p-3 rounded">
-            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              진도 관리 (Progress)
-            </div>
-            <div className="text-gray-600 pl-6 space-y-1">
-              <div>• [lms_progress] 차시별 학습 진도</div>
-              <div>• 영상: 재생 시간 기반 진도율</div>
-              <div>• 문서: 열람 여부</div>
-              <div>• progressPercent (0-100)</div>
-            </div>
-          </div>
-          <div className="bg-gray-50 p-3 rounded">
-            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
-              <Award className="w-4 h-4" />
-              성적 관리 (Score)
-            </div>
-            <div className="text-gray-600 pl-6 space-y-1">
-              <div>• [lms_scores] 평가 점수 기록</div>
-              <div>• 퀴즈/과제 점수</div>
-              <div>• 가중치 기반 종합 점수</div>
-            </div>
-          </div>
-          <div className="bg-gray-50 p-3 rounded">
-            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
-              <UserCheck className="w-4 h-4" />
-              수료 관리 (Completion)
-            </div>
-            <div className="text-gray-600 pl-6 space-y-1">
-              <div>• [lms_completions] 수료 판정 기록</div>
-              <div>• completion_rule 기반 판정</div>
-              <div>• 수료 조건: 진도율 + 점수 + 출석</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* SIS ↔ LMS 연계 */}
-      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
-        <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4" />
-          SIS ↔ LMS 연계 흐름
-        </h3>
-        <div className="text-xs space-y-2">
-          <div className="flex items-center gap-2 flex-wrap bg-gray-50 p-2 rounded">
-            <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded">SIS</span>
-            <span className="text-gray-400">수강 등록</span>
-            <span>→</span>
-            <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded">LMS</span>
-            <span className="text-gray-400">Progress 레코드 생성</span>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap bg-gray-50 p-2 rounded">
-            <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded">LMS</span>
-            <span className="text-gray-400">수료 판정 완료</span>
-            <span>→</span>
-            <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded">SIS</span>
-            <span className="text-gray-400">COMPLETED</span>
-          </div>
-        </div>
-        <div className="mt-3 p-2 bg-amber-50 rounded text-xs text-amber-700">
-          <strong>주의:</strong> LMS → SIS는 상태 업데이트만 (단방향 원칙 유지)
-        </div>
-      </div>
-
-      {/* 수료 규칙 예시 */}
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
-        <h3 className="font-semibold text-gray-700 mb-3">수료 규칙 예시</h3>
-        <div className="bg-gray-800 text-green-400 p-3 rounded text-xs font-mono">
-          progress_threshold: 80%<br/>
-          score_threshold: 60점<br/>
-          attendance_required: true
-        </div>
-      </div>
-    </>
-  );
-
   const renderContent = () => {
     switch(activeTab) {
       case 'overview': return renderOverview();
       case 'modules': return renderModules();
-      case 'lms': return renderLMS();
       case 'transaction': return renderTransaction();
       case 'rbac': return renderRBAC();
       case 'b2c': return renderB2C();
