@@ -847,7 +847,7 @@ export default function LMSArchitecture() {
       </div>
 
       {/* 데이터 흐름 원칙 */}
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
         <h3 className="font-semibold text-gray-700 mb-3">데이터 흐름 원칙</h3>
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
@@ -866,6 +866,41 @@ export default function LMSArchitecture() {
             <span className="text-blue-600">→</span>
             <span>디테일 변경 시 마스터에서 시작</span>
           </div>
+        </div>
+      </div>
+
+      {/* 마스터/서브 관계 */}
+      <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">모듈 간 마스터/서브 관계</h3>
+        <div className="space-y-2 text-xs">
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-medium">CMS</span>
+              <span className="text-gray-400">→</span>
+              <span className="bg-indigo-50 text-indigo-600 px-2 py-1 rounded">LO</span>
+            </div>
+            <div className="text-gray-600 pl-2">콘텐츠 업로드 → LO 자동 생성 (이벤트 기반)</div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-medium">CM</span>
+              <span className="text-gray-400">→</span>
+              <span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded">CR</span>
+            </div>
+            <div className="text-gray-600 pl-2">강의 아이템(CourseItem) 기반 학습 순서 설정</div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">TS</span>
+              <span className="text-gray-400">→</span>
+              <span className="bg-orange-50 text-orange-600 px-2 py-1 rounded">IIS</span>
+              <span className="bg-orange-50 text-orange-600 px-2 py-1 rounded">SIS</span>
+            </div>
+            <div className="text-gray-600 pl-2">차수(Time) 기반 강사 배정 / 수강 기록 생성</div>
+          </div>
+        </div>
+        <div className="mt-3 p-2 bg-amber-50 rounded text-xs text-amber-700">
+          <strong>원칙:</strong> 서브 모듈 데이터 변경 시, 반드시 마스터 모듈에서 트랜잭션 시작
         </div>
       </div>
     </>
