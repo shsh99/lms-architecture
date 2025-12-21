@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   ChevronDown, ChevronRight, Database, Building2, GraduationCap,
   BookOpen, UserCheck, User, Globe, CreditCard,
   Search, Tent, Video, Calendar, Languages, LucideIcon,
   Clock, FolderTree, Link2, Play, Upload, Shield, Settings, BarChart3, FileText,
-  GitBranch, Lock, AlertTriangle, Key, Server, Filter
+  GitBranch, Lock, AlertTriangle, Key, Server, Filter, Zap, AlertCircle
 } from 'lucide-react';
 
 interface ModuleCardProps {
@@ -62,6 +62,61 @@ interface Module {
   badge?: string;
 }
 
+// 드롭다운 컴포넌트
+interface DropdownProps {
+  label: string;
+  color: string;
+  items: { id: string; label: string; color: string }[];
+  activeTab: string;
+  onSelect: (id: string) => void;
+}
+
+const TabDropdown = ({ label, color, items, activeTab, onSelect }: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const isActive = items.some(item => item.id === activeTab);
+  const activeItem = items.find(item => item.id === activeTab);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={dropdownRef} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`py-2 px-3 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+          isActive ? `${activeItem?.color || color} text-white` : 'text-gray-600 hover:bg-gray-100'
+        }`}
+      >
+        {isActive ? activeItem?.label : label}
+        <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20 min-w-[120px]">
+          {items.map(item => (
+            <button
+              key={item.id}
+              onClick={() => { onSelect(item.id); setIsOpen(false); }}
+              className={`w-full text-left px-3 py-2 text-xs hover:bg-gray-50 ${
+                activeTab === item.id ? 'font-medium text-gray-900' : 'text-gray-600'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function LMSArchitecture() {
   const [activeTab, setActiveTab] = useState('overview');
   const [openModules, setOpenModules] = useState<Record<string, boolean>>({});
@@ -70,15 +125,35 @@ export default function LMSArchitecture() {
     setOpenModules(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const tabs = [
-    { id: 'overview', label: '전체 구조', color: 'bg-gray-700' },
-    { id: 'modules', label: '모듈 구조', color: 'bg-indigo-600' },
-    { id: 'transaction', label: '트랜잭션', color: 'bg-orange-600' },
-    { id: 'rbac', label: 'RBAC', color: 'bg-rose-600' },
-    { id: 'b2c', label: 'B2C', color: 'bg-emerald-600' },
-    { id: 'b2b', label: 'B2B', color: 'bg-blue-600' },
-    { id: 'kpop', label: 'K-Pop', color: 'bg-purple-600' },
-  ];
+  // 카테고리별 탭 그룹
+  const tabCategories = {
+    structure: {
+      label: '구조',
+      color: 'bg-gray-700',
+      items: [
+        { id: 'overview', label: '전체 구조', color: 'bg-gray-700' },
+        { id: 'modules', label: '모듈 구조', color: 'bg-indigo-600' },
+      ]
+    },
+    tech: {
+      label: '기술',
+      color: 'bg-orange-600',
+      items: [
+        { id: 'transaction', label: '트랜잭션', color: 'bg-orange-600' },
+        { id: 'rbac', label: 'RBAC', color: 'bg-rose-600' },
+        { id: 'api', label: 'API/에러', color: 'bg-cyan-600' },
+      ]
+    },
+    sites: {
+      label: '사이트',
+      color: 'bg-emerald-600',
+      items: [
+        { id: 'b2c', label: 'B2C', color: 'bg-emerald-600' },
+        { id: 'b2b', label: 'B2B', color: 'bg-blue-600' },
+        { id: 'kpop', label: 'K-Pop', color: 'bg-purple-600' },
+      ]
+    }
+  };
 
   // 시스템 모듈 구조 (module-structure.md 기반)
   const systemModules: Module[] = [
@@ -1009,12 +1084,183 @@ export default function LMSArchitecture() {
     </>
   );
 
+  const renderAPI = () => (
+    <>
+      <SectionHeader
+        title="API & 에러 처리"
+        subtitle="REST API 설계 원칙 및 에러 핸들링 체계"
+        color="bg-cyan-600"
+      />
+
+      {/* API 설계 원칙 */}
+      <div className="bg-cyan-50 rounded-lg p-4 mb-4 border border-cyan-200">
+        <h3 className="font-semibold text-cyan-700 mb-3 flex items-center gap-2">
+          <Zap className="w-4 h-4" />
+          API 설계 원칙
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="bg-white p-3 rounded">
+            <div className="font-medium text-gray-700 mb-2">URL 규칙</div>
+            <div className="text-gray-600 space-y-1 text-xs">
+              <div>• 복수형 케밥-케이스: <code className="bg-gray-100 px-1 rounded">/api/courses</code>, <code className="bg-gray-100 px-1 rounded">/api/order-items</code></div>
+              <div>• 계층 표현: <code className="bg-gray-100 px-1 rounded">/api/courses/{'{courseId}'}/items</code></div>
+            </div>
+          </div>
+          <div className="bg-white p-3 rounded">
+            <div className="font-medium text-gray-700 mb-2">HTTP 상태 코드</div>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="bg-green-50 p-2 rounded text-center">
+                <div className="font-medium text-green-700">GET</div>
+                <div className="text-green-600">200 OK</div>
+              </div>
+              <div className="bg-blue-50 p-2 rounded text-center">
+                <div className="font-medium text-blue-700">POST</div>
+                <div className="text-blue-600">201 Created</div>
+              </div>
+              <div className="bg-gray-100 p-2 rounded text-center">
+                <div className="font-medium text-gray-700">DELETE</div>
+                <div className="text-gray-600">204 No Content</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 공통 Response 포맷 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">공통 Response 포맷</h3>
+        <div className="bg-gray-800 text-green-400 p-3 rounded text-xs font-mono">
+          <div>{'{'}</div>
+          <div className="pl-4">"success": true,</div>
+          <div className="pl-4">"data": {'{ /* 응답 데이터 */ }'},</div>
+          <div className="pl-4">"error": null</div>
+          <div>{'}'}</div>
+        </div>
+      </div>
+
+      {/* 주요 API 엔드포인트 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">주요 API 엔드포인트</h3>
+        <div className="space-y-3 text-xs">
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-indigo-700 mb-2">Auth (인증)</div>
+            <div className="space-y-1 text-gray-600">
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/auth/register - 회원가입</div>
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/auth/login - 로그인</div>
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/auth/refresh - 토큰 갱신</div>
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/auth/oauth/{'{provider}'}/callback - OAuth</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-indigo-700 mb-2">Users (사용자)</div>
+            <div className="space-y-1 text-gray-600">
+              <div><span className="bg-green-100 text-green-700 px-1 rounded">GET</span> /api/users/me - 내 정보</div>
+              <div><span className="bg-amber-100 text-amber-700 px-1 rounded">PUT</span> /api/users/me - 정보 수정</div>
+              <div><span className="bg-green-100 text-green-700 px-1 rounded">GET</span> /api/users - 목록 (OPERATOR+)</div>
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/users/{'{id}'}/course-roles - 역할 부여</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-indigo-700 mb-2">Courses (강의)</div>
+            <div className="space-y-1 text-gray-600">
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/courses - 강의 생성</div>
+              <div><span className="bg-green-100 text-green-700 px-1 rounded">GET</span> /api/courses/{'{id}'} - 상세 조회</div>
+              <div><span className="bg-blue-100 text-blue-700 px-1 rounded">POST</span> /api/courses/{'{id}'}/items - 차시 추가</div>
+              <div><span className="bg-green-100 text-green-700 px-1 rounded">GET</span> /api/courses/{'{id}'}/items/hierarchy - 계층 구조</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 에러 처리 체계 */}
+      <div className="bg-rose-50 rounded-lg p-4 mb-4 border border-rose-200">
+        <h3 className="font-semibold text-rose-700 mb-3 flex items-center gap-2">
+          <AlertCircle className="w-4 h-4" />
+          에러 처리 체계
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="bg-white p-3 rounded">
+            <div className="font-medium text-gray-700 mb-2">예외 계층 구조</div>
+            <div className="text-xs text-gray-600 font-mono bg-gray-50 p-2 rounded">
+              <div>RuntimeException</div>
+              <div className="pl-2">└─ BusinessException</div>
+              <div className="pl-6">├─ NotFoundException (404)</div>
+              <div className="pl-6">├─ DuplicateException (400)</div>
+              <div className="pl-6">├─ UnauthorizedException (401)</div>
+              <div className="pl-6">├─ ForbiddenException (403)</div>
+              <div className="pl-6">└─ ValidationException (400)</div>
+            </div>
+          </div>
+          <div className="bg-white p-3 rounded">
+            <div className="font-medium text-gray-700 mb-2">GlobalExceptionHandler</div>
+            <div className="text-xs text-gray-600">
+              <code className="bg-gray-100 px-1 rounded">@RestControllerAdvice</code>로 중앙 집중식 예외 처리
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 에러 응답 포맷 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">에러 응답 포맷</h3>
+        <div className="bg-gray-800 text-red-400 p-3 rounded text-xs font-mono">
+          <div>{'{'}</div>
+          <div className="pl-4">"code": "U001",</div>
+          <div className="pl-4">"message": "사용자를 찾을 수 없습니다",</div>
+          <div className="pl-4">"timestamp": "2025-01-15T10:30:00",</div>
+          <div className="pl-4">"errors": null</div>
+          <div>{'}'}</div>
+        </div>
+      </div>
+
+      {/* ErrorCode 분류 */}
+      <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">ErrorCode 분류</h3>
+        <div className="space-y-3 text-xs">
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-gray-700 mb-2">Common (공통)</div>
+            <div className="space-y-1">
+              <div className="flex justify-between"><span className="text-gray-600">C001</span><span>잘못된 입력값</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">C999</span><span>서버 오류</span></div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-indigo-700 mb-2">User (U0xx)</div>
+            <div className="space-y-1">
+              <div className="flex justify-between"><span className="text-gray-600">U001</span><span>사용자 없음 (404)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">U002</span><span>이메일 중복 (400)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">U003</span><span>비밀번호 불일치 (401)</span></div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-emerald-700 mb-2">Course</div>
+            <div className="space-y-1">
+              <div className="flex justify-between"><span className="text-gray-600">COURSE_NOT_FOUND</span><span>강의 없음 (404)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">ITEM_NOT_FOUND</span><span>차시 없음 (404)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">MAX_DEPTH_EXCEEDED</span><span>최대 깊이 초과 (400)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">CIRCULAR_RELATION</span><span>순환 참조 (400)</span></div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-amber-700 mb-2">Auth (인증)</div>
+            <div className="space-y-1">
+              <div className="flex justify-between"><span className="text-gray-600">INVALID_TOKEN</span><span>유효하지 않은 토큰 (401)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">TOKEN_EXPIRED</span><span>토큰 만료 (401)</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">ACCESS_DENIED</span><span>접근 권한 없음 (403)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
   const renderContent = () => {
     switch(activeTab) {
       case 'overview': return renderOverview();
       case 'modules': return renderModules();
       case 'transaction': return renderTransaction();
       case 'rbac': return renderRBAC();
+      case 'api': return renderAPI();
       case 'b2c': return renderB2C();
       case 'b2b': return renderB2B();
       case 'kpop': return renderKpop();
@@ -1047,21 +1293,29 @@ export default function LMSArchitecture() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 mb-4 bg-white p-1 rounded-lg shadow-sm overflow-x-auto">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 px-2 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? `${tab.color} text-white`
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Tabs - 드롭다운 방식 */}
+        <div className="flex gap-2 mb-4 bg-white p-2 rounded-lg shadow-sm justify-center">
+          <TabDropdown
+            label={tabCategories.structure.label}
+            color={tabCategories.structure.color}
+            items={tabCategories.structure.items}
+            activeTab={activeTab}
+            onSelect={setActiveTab}
+          />
+          <TabDropdown
+            label={tabCategories.tech.label}
+            color={tabCategories.tech.color}
+            items={tabCategories.tech.items}
+            activeTab={activeTab}
+            onSelect={setActiveTab}
+          />
+          <TabDropdown
+            label={tabCategories.sites.label}
+            color={tabCategories.sites.color}
+            items={tabCategories.sites.items}
+            activeTab={activeTab}
+            onSelect={setActiveTab}
+          />
         </div>
 
         {/* Content */}
