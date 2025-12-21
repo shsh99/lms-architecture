@@ -8,7 +8,7 @@ https://lms-architecture.vercel.app
 
 ## 기능
 
-- **전체 구조**: B2C 코어 + 테넌트화를 통한 B2B/K-Pop 확장 구조
+- **전체 구조**: B2C 코어 + 테넌트화를 통한 B2B/K-Pop 확장 구조 (Saas 기반 멀티테넌시)
 - **모듈 구조**: UM, TS, SIS, IIS, CM, CR, LO, CMS 시스템 모듈
 - **B2C (코어)**: 인프런/Udemy 스타일 오픈 마켓플레이스 (Course, Instructor, Payment, Discovery, Landing)
 - **B2B 확장**: 기업용 LMS (Tenant, Branding, Organization, Analytics, License)
