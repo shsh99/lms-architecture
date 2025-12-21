@@ -292,9 +292,9 @@ export default function LMSArchitecture() {
     b2c: [
       { role: 'TENANT_ADMIN', desc: '전체 관리' },
       { role: 'OPERATOR', desc: '강의 검토/승인, 차수 생성, 강사 배정' },
-      { role: 'USER', desc: '수강 + 강의 생성 가능' },
-      { role: 'OWNER', desc: '(강의별) 강의 소유, 삭제, 수익' },
-      { role: 'INSTRUCTOR', desc: '(강의별) 강의 관리, 수익 분배' },
+      { role: 'USER', desc: '수강 ("강의 개설하기" 클릭 → DESIGNER 자동 부여)' },
+      { role: 'DESIGNER', desc: '강의 설계/개설 신청 (셀프 부여)' },
+      { role: 'OWNER', desc: '(강의별) 승인 후 자동 부여, 강의 소유' },
     ],
     b2b: [
       { role: 'TENANT_ADMIN', desc: '브랜딩, 전사 통계' },
