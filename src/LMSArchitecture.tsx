@@ -4,7 +4,7 @@ import {
   BookOpen, UserCheck, User, Globe, CreditCard,
   Search, Tent, Video, Calendar, Languages, LucideIcon,
   Clock, FolderTree, Link2, Play, Upload, Shield, Settings, BarChart3, FileText,
-  GitBranch, Lock, AlertTriangle, Key
+  GitBranch, Lock, AlertTriangle, Key, Server, Filter, Layers, Award, TrendingUp
 } from 'lucide-react';
 
 interface ModuleCardProps {
@@ -73,6 +73,7 @@ export default function LMSArchitecture() {
   const tabs = [
     { id: 'overview', label: '전체 구조', color: 'bg-gray-700' },
     { id: 'modules', label: '모듈 구조', color: 'bg-indigo-600' },
+    { id: 'lms', label: 'LMS', color: 'bg-teal-600' },
     { id: 'transaction', label: '트랜잭션', color: 'bg-orange-600' },
     { id: 'rbac', label: 'RBAC', color: 'bg-rose-600' },
     { id: 'b2c', label: 'B2C', color: 'bg-emerald-600' },
@@ -337,6 +338,31 @@ export default function LMSArchitecture() {
               K-Pop (특화)<br/>
               <span className="text-xs opacity-70">외국인 단기 연수</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Request Flow */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <Server className="w-4 h-4" />
+          Request Flow (요청 처리 흐름)
+        </h3>
+        <div className="text-xs space-y-2">
+          <div className="flex items-center gap-1 flex-wrap">
+            <span className="bg-gray-800 text-white px-2 py-1 rounded">Client</span>
+            <span>→</span>
+            <span className="bg-amber-100 text-amber-700 px-2 py-1 rounded">TenantFilter</span>
+            <span>→</span>
+            <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">JwtAuth</span>
+            <span>→</span>
+            <span className="bg-green-100 text-green-700 px-2 py-1 rounded">Controller</span>
+            <span>→</span>
+            <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded">Repository</span>
+          </div>
+          <div className="bg-gray-50 p-2 rounded text-gray-600 space-y-1">
+            <div><strong>TenantFilter:</strong> tenant_id 추출 → TenantContext 설정</div>
+            <div><strong>Repository:</strong> @TenantFilter → 자동 tenant_id 필터링</div>
           </div>
         </div>
       </div>
@@ -687,6 +713,42 @@ export default function LMSArchitecture() {
         </div>
       </div>
 
+      {/* Lock 전략 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <Lock className="w-4 h-4" />
+          Lock 전략 (동시성 제어)
+        </h3>
+        <div className="space-y-3 text-sm">
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-gray-700 mb-1">비관적 락 (Pessimistic Lock)</div>
+            <div className="text-gray-600 pl-3 space-y-1">
+              <div>• SELECT FOR UPDATE로 행 잠금</div>
+              <div>• 사용: 정원 체크 + 수강 등록</div>
+              <div className="text-xs text-gray-400">충돌 가능성 높을 때 사용</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-gray-700 mb-1">낙관적 락 (Optimistic Lock)</div>
+            <div className="text-gray-600 pl-3 space-y-1">
+              <div>• @Version 필드로 충돌 감지</div>
+              <div>• 사용: 강의 정보 수정</div>
+              <div className="text-xs text-gray-400">충돌 가능성 낮을 때 사용</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-gray-700 mb-1">Partial Unique Index</div>
+            <div className="text-gray-600 pl-3 space-y-1">
+              <div>• DB 레벨 유일성 보장</div>
+              <div>• 사용: ACTIVE 상태 수강만 중복 체크</div>
+              <div className="bg-gray-800 text-green-400 p-2 rounded text-xs font-mono mt-1">
+                WHERE status = 'ACTIVE'
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* 데이터 흐름 원칙 */}
       <div className="bg-white rounded-lg p-4 border border-gray-200">
         <h3 className="font-semibold text-gray-700 mb-3">데이터 흐름 원칙</h3>
@@ -716,15 +778,15 @@ export default function LMSArchitecture() {
     <>
       <SectionHeader
         title="RBAC 권한 체계"
-        subtitle="Role → Authority → Privilege 3계층 구조"
+        subtitle="Role → Authority → Privilege → Resource 4계층 구조"
         color="bg-rose-600"
       />
 
-      {/* 3계층 구조 */}
+      {/* 4계층 구조 */}
       <div className="bg-rose-50 rounded-lg p-4 mb-4 border border-rose-200">
         <h3 className="font-semibold text-rose-700 mb-3 flex items-center gap-2">
           <Key className="w-4 h-4" />
-          권한 3계층 구조
+          권한 4계층 구조
         </h3>
         <div className="space-y-2 text-sm">
           <div className="bg-white p-3 rounded">
@@ -736,7 +798,7 @@ export default function LMSArchitecture() {
             <span className="text-rose-400">▼ (1:N)</span>
           </div>
           <div className="bg-white p-3 rounded">
-            <div className="font-medium text-rose-700">Authority (권한)</div>
+            <div className="font-medium text-rose-700">Authority (권한 그룹)</div>
             <div className="text-gray-600 pl-3">Role에 부여되는 권한 그룹</div>
             <div className="text-xs text-gray-400 pl-3">예: COURSE_MANAGE, USER_MANAGE</div>
           </div>
@@ -744,9 +806,43 @@ export default function LMSArchitecture() {
             <span className="text-rose-400">▼ (1:N)</span>
           </div>
           <div className="bg-white p-3 rounded">
-            <div className="font-medium text-rose-700">Privilege (특권)</div>
+            <div className="font-medium text-rose-700">Privilege (동작)</div>
             <div className="text-gray-600 pl-3">실제 수행 가능한 동작</div>
             <div className="text-xs text-gray-400 pl-3">예: course:create, course:approve</div>
+          </div>
+          <div className="flex justify-center">
+            <span className="text-rose-400">▼ (적용 대상)</span>
+          </div>
+          <div className="bg-white p-3 rounded">
+            <div className="font-medium text-rose-700">Resource (리소스)</div>
+            <div className="text-gray-600 pl-3">권한이 적용되는 대상 데이터</div>
+            <div className="text-xs text-gray-400 pl-3">예: 특정 강의, 특정 테넌트</div>
+          </div>
+        </div>
+      </div>
+
+      {/* TenantRole vs CourseRole */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">역할 구분: TenantRole vs CourseRole</h3>
+        <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="bg-blue-50 p-3 rounded border border-blue-200">
+            <div className="font-medium text-blue-700 mb-2">TenantRole (테넌트 레벨)</div>
+            <div className="space-y-1 text-blue-600">
+              <div>• SYSTEM_ADMIN - 시스템 전체</div>
+              <div>• TENANT_ADMIN - 테넌트 관리</div>
+              <div>• OPERATOR - 운영</div>
+              <div>• USER - 일반 (B2C)</div>
+              <div>• MEMBER - 학습자 (B2B)</div>
+            </div>
+          </div>
+          <div className="bg-amber-50 p-3 rounded border border-amber-200">
+            <div className="font-medium text-amber-700 mb-2">CourseRole (강의별)</div>
+            <div className="space-y-1 text-amber-600">
+              <div>• OWNER - 강의 소유자</div>
+              <div>• INSTRUCTOR - 강사</div>
+              <div className="text-xs text-gray-400 mt-2">※ 강의 생성 시 자동 부여</div>
+              <div className="text-xs text-gray-400">※ TenantRole과 별도 관리</div>
+            </div>
           </div>
         </div>
       </div>
@@ -804,8 +900,8 @@ export default function LMSArchitecture() {
       {/* 리소스 접근 통제 */}
       <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
         <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
-          <Lock className="w-4 h-4" />
-          리소스 접근 통제
+          <Filter className="w-4 h-4" />
+          리소스 접근 통제 (Data Access Control)
         </h3>
         <div className="space-y-2 text-sm">
           <div className="bg-gray-50 p-3 rounded">
@@ -839,7 +935,7 @@ export default function LMSArchitecture() {
         <h3 className="font-semibold text-gray-700 mb-3">관리자 역할 분리</h3>
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div className="bg-gray-800 text-white p-3 rounded">
-            <div className="font-medium mb-2">SUPER_ADMIN</div>
+            <div className="font-medium mb-2">SYSTEM_ADMIN</div>
             <div className="space-y-1 text-gray-300">
               <div>• 전체 시스템 관리</div>
               <div>• 테넌트 생성/삭제</div>
@@ -861,10 +957,112 @@ export default function LMSArchitecture() {
     </>
   );
 
+  const renderLMS = () => (
+    <>
+      <SectionHeader
+        title="LMS (Learning Management System)"
+        subtitle="진도/성적/수료 관리 - SIS와 분리된 학습 관리"
+        color="bg-teal-600"
+      />
+
+      {/* LMS 핵심 개념 */}
+      <div className="bg-teal-50 rounded-lg p-4 mb-4 border border-teal-200">
+        <h3 className="font-semibold text-teal-700 mb-2 flex items-center gap-2">
+          <TrendingUp className="w-4 h-4" />
+          LMS 핵심 개념
+        </h3>
+        <ul className="text-sm text-teal-600 space-y-1">
+          <li>• SIS는 "수강 신청/등록" 기록만 담당</li>
+          <li>• LMS는 "학습 과정 추적/성과 관리" 담당</li>
+          <li>• 분리 이유: 관심사 분리 + 확장성</li>
+        </ul>
+      </div>
+
+      {/* LMS 주요 기능 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">LMS 주요 기능</h3>
+        <div className="space-y-3 text-sm">
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              진도 관리 (Progress)
+            </div>
+            <div className="text-gray-600 pl-6 space-y-1">
+              <div>• [lms_progress] 차시별 학습 진도</div>
+              <div>• 영상: 재생 시간 기반 진도율</div>
+              <div>• 문서: 열람 여부</div>
+              <div>• progressPercent (0-100)</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
+              <Award className="w-4 h-4" />
+              성적 관리 (Score)
+            </div>
+            <div className="text-gray-600 pl-6 space-y-1">
+              <div>• [lms_scores] 평가 점수 기록</div>
+              <div>• 퀴즈/과제 점수</div>
+              <div>• 가중치 기반 종합 점수</div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-3 rounded">
+            <div className="font-medium text-teal-700 mb-1 flex items-center gap-2">
+              <UserCheck className="w-4 h-4" />
+              수료 관리 (Completion)
+            </div>
+            <div className="text-gray-600 pl-6 space-y-1">
+              <div>• [lms_completions] 수료 판정 기록</div>
+              <div>• completion_rule 기반 판정</div>
+              <div>• 수료 조건: 진도율 + 점수 + 출석</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SIS ↔ LMS 연계 */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <Layers className="w-4 h-4" />
+          SIS ↔ LMS 연계 흐름
+        </h3>
+        <div className="text-xs space-y-2">
+          <div className="flex items-center gap-2 flex-wrap bg-gray-50 p-2 rounded">
+            <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded">SIS</span>
+            <span className="text-gray-400">수강 등록</span>
+            <span>→</span>
+            <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded">LMS</span>
+            <span className="text-gray-400">Progress 레코드 생성</span>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap bg-gray-50 p-2 rounded">
+            <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded">LMS</span>
+            <span className="text-gray-400">수료 판정 완료</span>
+            <span>→</span>
+            <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded">SIS</span>
+            <span className="text-gray-400">COMPLETED</span>
+          </div>
+        </div>
+        <div className="mt-3 p-2 bg-amber-50 rounded text-xs text-amber-700">
+          <strong>주의:</strong> LMS → SIS는 상태 업데이트만 (단방향 원칙 유지)
+        </div>
+      </div>
+
+      {/* 수료 규칙 예시 */}
+      <div className="bg-white rounded-lg p-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">수료 규칙 예시</h3>
+        <div className="bg-gray-800 text-green-400 p-3 rounded text-xs font-mono">
+          progress_threshold: 80%<br/>
+          score_threshold: 60점<br/>
+          attendance_required: true
+        </div>
+      </div>
+    </>
+  );
+
   const renderContent = () => {
     switch(activeTab) {
       case 'overview': return renderOverview();
       case 'modules': return renderModules();
+      case 'lms': return renderLMS();
       case 'transaction': return renderTransaction();
       case 'rbac': return renderRBAC();
       case 'b2c': return renderB2C();
