@@ -108,7 +108,7 @@ export default function LMSArchitecture() {
       title: 'IIS (Instructor Information)',
       icon: GraduationCap,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[iis_instructor_assignments] 강사 배정', '필수: userKey + timeKey + assignedAt', 'InstructorRole: MAIN, ASSISTANT', 'AssignmentStatus: ACTIVE, REPLACED, CANCELLED', '강사 교체 이력 관리 (replacedAt)']
+      items: ['[iis_instructor_assignments] 강사 배정', '필수: userKey + timeKey + assignedAt', 'InstructorRole: MAIN (주강사 1명), SUB (보조), ASSISTANT (조교)', 'AssignmentStatus: ACTIVE, REPLACED, CANCELLED', '강사 교체 이력 관리 (replacedAt)']
     },
     {
       id: 'cm',
@@ -865,6 +865,36 @@ export default function LMSArchitecture() {
               <div className="text-xs text-gray-400 mt-2">※ 강의 생성 시 자동 부여</div>
               <div className="text-xs text-gray-400">※ TenantRole과 별도 관리</div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Privilege 범위 (Scope) */}
+      <div className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <h3 className="font-semibold text-gray-700 mb-3">Privilege 범위 (Scope)</h3>
+        <div className="text-sm text-gray-600 mb-3">
+          동일한 Privilege라도 <span className="font-medium">범위(scope)</span>에 따라 접근 가능한 데이터가 달라집니다.
+        </div>
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="bg-rose-50 p-2 rounded border border-rose-200">
+            <div className="font-medium text-rose-700">ALL</div>
+            <div className="text-gray-600">테넌트 내 모든 데이터</div>
+            <div className="text-gray-400 mt-1">예: OPERATOR</div>
+          </div>
+          <div className="bg-amber-50 p-2 rounded border border-amber-200">
+            <div className="font-medium text-amber-700">OWN</div>
+            <div className="text-gray-600">본인이 생성한 데이터</div>
+            <div className="text-gray-400 mt-1">예: OWNER의 강의</div>
+          </div>
+          <div className="bg-blue-50 p-2 rounded border border-blue-200">
+            <div className="font-medium text-blue-700">ASSIGNED</div>
+            <div className="text-gray-600">배정받은 데이터</div>
+            <div className="text-gray-400 mt-1">예: INSTRUCTOR 차수</div>
+          </div>
+          <div className="bg-green-50 p-2 rounded border border-green-200">
+            <div className="font-medium text-green-700">ENROLLED</div>
+            <div className="text-gray-600">수강 중인 데이터</div>
+            <div className="text-gray-400 mt-1">예: USER 진도</div>
           </div>
         </div>
       </div>
