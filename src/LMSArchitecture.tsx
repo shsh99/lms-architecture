@@ -87,7 +87,7 @@ export default function LMSArchitecture() {
       title: 'UM (User Master)',
       icon: User,
       color: 'border-indigo-300 bg-indigo-50',
-      items: ['[um_users] 사용자 기본 정보', '인증/인가 처리 (email, password)', '역할(Role): USER, MEMBER, OPERATOR, ADMIN', 'B2B: Organization 소속 관리', 'UserStatus: ACTIVE, INACTIVE, SUSPENDED']
+      items: ['[um_users] 사용자 기본 정보', '인증/인가 처리 (email, password)', '역할(TenantRole): TENANT_ADMIN, OPERATOR, DESIGNER, USER', 'B2B: Organization 소속 관리', 'UserStatus: ACTIVE, INACTIVE, SUSPENDED']
     },
     {
       id: 'ts',
@@ -297,10 +297,11 @@ export default function LMSArchitecture() {
       { role: 'INSTRUCTOR', desc: '(강의별) 강의 관리, 수익 분배' },
     ],
     b2b: [
-      { role: 'TENANT_ADMIN', desc: '전사 통계/브랜딩' },
-      { role: 'TENANT_OPERATOR', desc: '전체 운영 (유저/강의/학습현황)' },
-      { role: 'EXTERNAL_INSTRUCTOR', desc: '외부 강사 (강의 진행, 출석 관리)' },
-      { role: 'MEMBER', desc: '학습 (수강만)' },
+      { role: 'TENANT_ADMIN', desc: '브랜딩, 전사 통계' },
+      { role: 'OPERATOR', desc: '운영 + 역할 부여/회수' },
+      { role: 'USER', desc: '학습 (역할 부여 전까지 강의 개설 불가)' },
+      { role: 'DESIGNER', desc: '강의 설계 (OPERATOR가 부여)' },
+      { role: 'INSTRUCTOR', desc: '강사 (OPERATOR가 부여)' },
     ],
     kpop: [
       { role: 'TENANT_ADMIN', desc: '전체 관리' },
@@ -853,7 +854,7 @@ export default function LMSArchitecture() {
               <div>• TENANT_ADMIN - 테넌트 관리</div>
               <div>• OPERATOR - 운영</div>
               <div>• USER - 일반 (B2C)</div>
-              <div>• MEMBER - 학습자 (B2B)</div>
+              <div>• DESIGNER - 강의 설계</div>
             </div>
           </div>
           <div className="bg-amber-50 p-3 rounded border border-amber-200">
@@ -908,11 +909,11 @@ export default function LMSArchitecture() {
             </div>
           </div>
           <div className="bg-gray-50 p-3 rounded">
-            <div className="font-medium text-gray-700 mb-2">MEMBER (B2B)</div>
+            <div className="font-medium text-gray-700 mb-2">DESIGNER</div>
             <div className="flex flex-wrap gap-1">
-              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded">enrollment:self</span>
-              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded">progress:update</span>
-              <span className="text-gray-400">(수강만 가능)</span>
+              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded">course:create</span>
+              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded">course:edit</span>
+              <span className="text-gray-400">(강의 설계/개설 신청)</span>
             </div>
           </div>
         </div>
