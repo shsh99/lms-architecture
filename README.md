@@ -1,4 +1,4 @@
-# mzc-lp Architecture Viewer
+# LMS Architecture Viewer
 
 lms 플랫폼 아키텍처를 시각적으로 보여주는 인터랙티브 웹 애플리케이션입니다.
 
